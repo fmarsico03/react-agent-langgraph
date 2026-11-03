@@ -34,10 +34,26 @@ from agent.graph import compiled_graph
 EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples"
 
 
+def extract_text(content: Any) -> str:
+    """Normaliza el 'content' de un mensaje a texto plano.
+
+    En langchain-core moderno, 'content' puede ser un string o una lista de bloques
+    (ej: [{"type": "text", "text": "..."}]) cuando el modelo devuelve texto junto con
+    metadata extra. Esta funcion se queda solo con el texto, para que la traza sea
+    legible.
+    """
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = [block.get("text", "") for block in content if isinstance(block, dict)]
+        return "".join(parts)
+    return str(content)
+
+
 def message_to_dict(message: BaseMessage) -> dict[str, Any]:
     data: dict[str, Any] = {
         "type": message.__class__.__name__,
-        "content": message.content,
+        "content": extract_text(message.content),
     }
     tool_calls = getattr(message, "tool_calls", None)
     if tool_calls:
@@ -71,7 +87,9 @@ async def run_scenario_multi_paso(graph) -> dict[str, Any]:
         "Y el ultimo, de cuando fue y cuanto salio?",
     ]:
         result = await _ask(graph, thread_id, pregunta)
-        turnos.append({"pregunta": pregunta, "respuesta_final": result["messages"][-1].content})
+        turnos.append(
+            {"pregunta": pregunta, "respuesta_final": extract_text(result["messages"][-1].content)}
+        )
     return {
         "thread_id": thread_id,
         "turnos": turnos,
@@ -85,7 +103,9 @@ async def run_scenario_error(graph) -> dict[str, Any]:
     result = await _ask(graph, thread_id, pregunta)
     return {
         "thread_id": thread_id,
-        "turnos": [{"pregunta": pregunta, "respuesta_final": result["messages"][-1].content}],
+        "turnos": [
+            {"pregunta": pregunta, "respuesta_final": extract_text(result["messages"][-1].content)}
+        ],
         "trace_completa": await _full_trace(graph, thread_id),
     }
 

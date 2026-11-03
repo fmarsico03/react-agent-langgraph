@@ -52,7 +52,13 @@ def _get_llm() -> BaseChatModel:
         raise RuntimeError(
             "Falta GOOGLE_API_KEY en el entorno. Copia .env.example a .env y completa tu key."
         )
-    llm = ChatGoogleGenerativeAI(model=GEMINI_MODEL, google_api_key=GOOGLE_API_KEY, temperature=0)
+    llm = ChatGoogleGenerativeAI(
+        model=GEMINI_MODEL,
+        google_api_key=GOOGLE_API_KEY,
+        temperature=0,
+        timeout=30,
+        max_retries=2,
+    )
     return llm.bind_tools(TOOLS)
 
 

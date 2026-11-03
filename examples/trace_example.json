@@ -1,0 +1,138 @@
+{
+  "generado_en_utc": "2026-11-03T03:16:16.997944+00:00",
+  "escenarios": {
+    "razonamiento_multi_paso": {
+      "thread_id": "demo-cliente-102-5de9cc36",
+      "turnos": [
+        {
+          "pregunta": "Cuantos pedidos tuvo el cliente 102 y cual fue el total?",
+          "respuesta_final": "El cliente 102 (Carlos Fernandez) tuvo **3 pedidos** en total. \n\nA continuación el detalle de cada uno:\n* **Pedido 501** (10/02/2026): $5.000\n* **Pedido 502** (18/05/2026): $4.500\n* **Pedido 503** (30/09/2026): $5.000\n\nEl **total gastado** entre todos sus pedidos es de **$14.500**."
+        },
+        {
+          "pregunta": "Y el ultimo, de cuando fue y cuanto salio?",
+          "respuesta_final": "El último pedido del cliente 102 fue el **pedido 503**, realizado el **30 de septiembre de 2026** (2026-09-30), y tuvo un costo total de **$5.000**."
+        }
+      ],
+      "trace_completa": [
+        {
+          "type": "HumanMessage",
+          "content": "Cuantos pedidos tuvo el cliente 102 y cual fue el total?"
+        },
+        {
+          "type": "AIMessage",
+          "content": "",
+          "tool_calls": [
+            {
+              "name": "buscar_cliente_pedidos",
+              "args": {
+                "cliente_id": 102
+              },
+              "id": "call_317234"
+            }
+          ]
+        },
+        {
+          "type": "ToolMessage",
+          "content": "{\"cliente_id\": 102, \"nombre\": \"Carlos Fernandez\", \"pedido_ids\": [501, 502, 503]}",
+          "tool_call_id": "call_317234",
+          "name": "buscar_cliente_pedidos"
+        },
+        {
+          "type": "AIMessage",
+          "content": "",
+          "tool_calls": [
+            {
+              "name": "obtener_detalle_pedido",
+              "args": {
+                "pedido_id": 501
+              },
+              "id": "call_317086"
+            },
+            {
+              "name": "obtener_detalle_pedido",
+              "args": {
+                "pedido_id": 502
+              },
+              "id": "call_317087"
+            },
+            {
+              "name": "obtener_detalle_pedido",
+              "args": {
+                "pedido_id": 503
+              },
+              "id": "call_317088"
+            }
+          ]
+        },
+        {
+          "type": "ToolMessage",
+          "content": "{\"pedido_id\": 501, \"cliente_id\": 102, \"fecha\": \"2026-02-10\", \"total\": 5000, \"items\": [\"Teclado mecanico\", \"Mousepad\"]}",
+          "tool_call_id": "call_317086",
+          "name": "obtener_detalle_pedido"
+        },
+        {
+          "type": "ToolMessage",
+          "content": "{\"pedido_id\": 502, \"cliente_id\": 102, \"fecha\": \"2026-05-18\", \"total\": 4500, \"items\": [\"Monitor 24''\"]}",
+          "tool_call_id": "call_317087",
+          "name": "obtener_detalle_pedido"
+        },
+        {
+          "type": "ToolMessage",
+          "content": "{\"pedido_id\": 503, \"cliente_id\": 102, \"fecha\": \"2026-09-30\", \"total\": 5000, \"items\": [\"Auriculares\", \"Mouse inalambrico\"]}",
+          "tool_call_id": "call_317088",
+          "name": "obtener_detalle_pedido"
+        },
+        {
+          "type": "AIMessage",
+          "content": "El cliente 102 (Carlos Fernandez) tuvo **3 pedidos** en total. \n\nA continuación el detalle de cada uno:\n* **Pedido 501** (10/02/2026): $5.000\n* **Pedido 502** (18/05/2026): $4.500\n* **Pedido 503** (30/09/2026): $5.000\n\nEl **total gastado** entre todos sus pedidos es de **$14.500**."
+        },
+        {
+          "type": "HumanMessage",
+          "content": "Y el ultimo, de cuando fue y cuanto salio?"
+        },
+        {
+          "type": "AIMessage",
+          "content": "El último pedido del cliente 102 fue el **pedido 503**, realizado el **30 de septiembre de 2026** (2026-09-30), y tuvo un costo total de **$5.000**."
+        }
+      ]
+    },
+    "ciclo_de_retorno_error": {
+      "thread_id": "demo-cliente-inexistente-6ad810dd",
+      "turnos": [
+        {
+          "pregunta": "Cuantos pedidos tuvo el cliente 999?",
+          "respuesta_final": "El cliente 999 no existe en la base de datos, por lo que no tiene registrado ningún pedido. ¿Podrías verificar si el ID del cliente es correcto?"
+        }
+      ],
+      "trace_completa": [
+        {
+          "type": "HumanMessage",
+          "content": "Cuantos pedidos tuvo el cliente 999?"
+        },
+        {
+          "type": "AIMessage",
+          "content": "",
+          "tool_calls": [
+            {
+              "name": "buscar_cliente_pedidos",
+              "args": {
+                "cliente_id": 999
+              },
+              "id": "call_317443"
+            }
+          ]
+        },
+        {
+          "type": "ToolMessage",
+          "content": "{\"error\": \"No existe ningun cliente con id 999 en la base de datos.\"}",
+          "tool_call_id": "call_317443",
+          "name": "buscar_cliente_pedidos"
+        },
+        {
+          "type": "AIMessage",
+          "content": "El cliente 999 no existe en la base de datos, por lo que no tiene registrado ningún pedido. ¿Podrías verificar si el ID del cliente es correcto?"
+        }
+      ]
+    }
+  }
+}
