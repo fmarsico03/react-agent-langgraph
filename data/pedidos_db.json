@@ -1,0 +1,44 @@
+{
+  "clientes": {
+    "102": {
+      "nombre": "Carlos Fernandez",
+      "pedido_ids": [501, 502, 503]
+    },
+    "205": {
+      "nombre": "Lucia Gomez",
+      "pedido_ids": [601, 602]
+    }
+  },
+  "pedidos": {
+    "501": {
+      "cliente_id": 102,
+      "fecha": "2026-02-10",
+      "total": 5000,
+      "items": ["Teclado mecanico", "Mousepad"]
+    },
+    "502": {
+      "cliente_id": 102,
+      "fecha": "2026-05-18",
+      "total": 4500,
+      "items": ["Monitor 24''"]
+    },
+    "503": {
+      "cliente_id": 102,
+      "fecha": "2026-09-30",
+      "total": 5000,
+      "items": ["Auriculares", "Mouse inalambrico"]
+    },
+    "601": {
+      "cliente_id": 205,
+      "fecha": "2026-01-05",
+      "total": 3200,
+      "items": ["Webcam"]
+    },
+    "602": {
+      "cliente_id": 205,
+      "fecha": "2026-04-12",
+      "total": 2800,
+      "items": ["Microfono USB"]
+    }
+  }
+}
