@@ -1,25 +1,24 @@
-=== Escenario: razonamiento_multi_paso (thread_id=demo-cliente-102-5de9cc36) ===
+=== Escenario: razonamiento_multi_paso (thread_id=demo-cliente-102-f85e915c) ===
 [HumanMessage] Cuantos pedidos tuvo el cliente 102 y cual fue el total?
-[AIMessage] tool_calls=[{'name': 'buscar_cliente_pedidos', 'args': {'cliente_id': 102}, 'id': 'call_317234'}] 
+[AIMessage] tool_calls=[{'name': 'buscar_cliente_pedidos', 'args': {'cliente_id': 102}, 'id': 'call_9059213041681881243'}] 
 [ToolMessage] name=buscar_cliente_pedidos {"cliente_id": 102, "nombre": "Carlos Fernandez", "pedido_ids": [501, 502, 503]}
-[AIMessage] tool_calls=[{'name': 'obtener_detalle_pedido', 'args': {'pedido_id': 501}, 'id': 'call_317086'}, {'name': 'obtener_detalle_pedido', 'args': {'pedido_id': 502}, 'id': 'call_317087'}, {'name': 'obtener_detalle_pedido', 'args': {'pedido_id': 503}, 'id': 'call_317088'}] 
+[AIMessage] tool_calls=[{'name': 'obtener_detalle_pedido', 'args': {'pedido_id': 501}, 'id': 'call_12575063064402366505'}, {'name': 'obtener_detalle_pedido', 'args': {'pedido_id': 502}, 'id': 'call_12575063064402368160'}, {'name': 'obtener_detalle_pedido', 'args': {'pedido_id': 503}, 'id': 'call_12575063064402369815'}] 
 [ToolMessage] name=obtener_detalle_pedido {"pedido_id": 501, "cliente_id": 102, "fecha": "2026-02-10", "total": 5000, "items": ["Teclado mecanico", "Mousepad"]}
 [ToolMessage] name=obtener_detalle_pedido {"pedido_id": 502, "cliente_id": 102, "fecha": "2026-05-18", "total": 4500, "items": ["Monitor 24''"]}
 [ToolMessage] name=obtener_detalle_pedido {"pedido_id": 503, "cliente_id": 102, "fecha": "2026-09-30", "total": 5000, "items": ["Auriculares", "Mouse inalambrico"]}
-[AIMessage] El cliente 102 (Carlos Fernandez) tuvo **3 pedidos** en total. 
+[AIMessage] El cliente 102 (Carlos Fernandez) tuvo un total de **3 pedidos**, con los siguientes importes:
 
-A continuación el detalle de cada uno:
-* **Pedido 501** (10/02/2026): $5.000
-* **Pedido 502** (18/05/2026): $4.500
-* **Pedido 503** (30/09/2026): $5.000
+* Pedido 501: $5.000
+* Pedido 502: $4.500
+* Pedido 503: $5.000
 
-El **total gastado** entre todos sus pedidos es de **$14.500**.
+El total gastado entre todos sus pedidos es de **$14.500**.
 [HumanMessage] Y el ultimo, de cuando fue y cuanto salio?
-[AIMessage] El último pedido del cliente 102 fue el **pedido 503**, realizado el **30 de septiembre de 2026** (2026-09-30), y tuvo un costo total de **$5.000**.
+[AIMessage] El último pedido del cliente 102 (Carlos Fernandez) fue el **pedido 503**, realizado el **30 de septiembre de 2026** (2026-09-30), y su total fue de **$5.000**.
 
-=== Escenario: ciclo_de_retorno_error (thread_id=demo-cliente-inexistente-6ad810dd) ===
+=== Escenario: ciclo_de_retorno_error (thread_id=demo-cliente-inexistente-96103742) ===
 [HumanMessage] Cuantos pedidos tuvo el cliente 999?
-[AIMessage] tool_calls=[{'name': 'buscar_cliente_pedidos', 'args': {'cliente_id': 999}, 'id': 'call_317443'}] 
+[AIMessage] tool_calls=[{'name': 'buscar_cliente_pedidos', 'args': {'cliente_id': 999}, 'id': 'call_12755742921682273206'}] 
 [ToolMessage] name=buscar_cliente_pedidos {"error": "No existe ningun cliente con id 999 en la base de datos."}
-[AIMessage] El cliente 999 no existe en la base de datos, por lo que no tiene registrado ningún pedido. ¿Podrías verificar si el ID del cliente es correcto?
+[AIMessage] No se encontró ningún cliente registrado con el ID 999 en la base de datos, por lo que no tiene pedidos asociados. ¿Podrías verificar si el número de cliente es correcto?
 

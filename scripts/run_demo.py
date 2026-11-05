@@ -27,27 +27,14 @@ from pathlib import Path
 from typing import Any
 
 from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_core.runnables import RunnableConfig
+from langgraph.graph.state import CompiledStateGraph
 
 from agent.config import RECURSION_LIMIT
 from agent.graph import compiled_graph
+from agent.utils import extract_text
 
 EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples"
-
-
-def extract_text(content: Any) -> str:
-    """Normaliza el 'content' de un mensaje a texto plano.
-
-    En langchain-core moderno, 'content' puede ser un string o una lista de bloques
-    (ej: [{"type": "text", "text": "..."}]) cuando el modelo devuelve texto junto con
-    metadata extra. Esta funcion se queda solo con el texto, para que la traza sea
-    legible.
-    """
-    if isinstance(content, str):
-        return content
-    if isinstance(content, list):
-        parts = [block.get("text", "") for block in content if isinstance(block, dict)]
-        return "".join(parts)
-    return str(content)
 
 
 def message_to_dict(message: BaseMessage) -> dict[str, Any]:
@@ -69,19 +56,19 @@ def message_to_dict(message: BaseMessage) -> dict[str, Any]:
     return data
 
 
-async def _ask(graph, thread_id: str, text: str) -> Any:
-    config = {"configurable": {"thread_id": thread_id}, "recursion_limit": RECURSION_LIMIT}
+async def _ask(graph: CompiledStateGraph, thread_id: str, text: str) -> dict[str, Any]:
+    config: RunnableConfig = {"configurable": {"thread_id": thread_id}, "recursion_limit": RECURSION_LIMIT}
     return await graph.ainvoke({"messages": [HumanMessage(content=text)]}, config=config)
 
 
-async def _full_trace(graph, thread_id: str) -> list[dict[str, Any]]:
+async def _full_trace(graph: CompiledStateGraph, thread_id: str) -> list[dict[str, Any]]:
     state = await graph.aget_state({"configurable": {"thread_id": thread_id}})
     return [message_to_dict(m) for m in state.values["messages"]]
 
 
-async def run_scenario_multi_paso(graph) -> dict[str, Any]:
+async def run_scenario_multi_paso(graph: CompiledStateGraph) -> dict[str, Any]:
     thread_id = f"demo-cliente-102-{uuid.uuid4().hex[:8]}"
-    turnos = []
+    turnos: list[dict[str, str]] = []
     for pregunta in [
         "Cuantos pedidos tuvo el cliente 102 y cual fue el total?",
         "Y el ultimo, de cuando fue y cuanto salio?",
@@ -97,7 +84,7 @@ async def run_scenario_multi_paso(graph) -> dict[str, Any]:
     }
 
 
-async def run_scenario_error(graph) -> dict[str, Any]:
+async def run_scenario_error(graph: CompiledStateGraph) -> dict[str, Any]:
     thread_id = f"demo-cliente-inexistente-{uuid.uuid4().hex[:8]}"
     pregunta = "Cuantos pedidos tuvo el cliente 999?"
     result = await _ask(graph, thread_id, pregunta)

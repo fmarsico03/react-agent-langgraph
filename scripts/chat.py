@@ -14,9 +14,11 @@ import asyncio
 import uuid
 
 from langchain_core.messages import HumanMessage
+from langchain_core.runnables import RunnableConfig
 
 from agent.config import RECURSION_LIMIT
 from agent.graph import compiled_graph
+from agent.utils import extract_text
 
 
 async def main() -> None:
@@ -31,7 +33,7 @@ async def main() -> None:
             if user_input.lower() in {"salir", "exit", "quit"}:
                 break
 
-            config = {
+            config: RunnableConfig = {
                 "configurable": {"thread_id": thread_id},
                 "recursion_limit": RECURSION_LIMIT,
             }
